@@ -2,18 +2,33 @@ class Api::RecipesController < ApplicationController
 
   def index
     @recipes = Recipe.all
+
+    search_term = params[:search]
+    if search_term
+      @recipes = @recipes.where("directions iLIKE ?", "%#{search_term}%")
+    end
+
+    sort_attribute = params[:sort]
+    sorted_order = params[:sort_order]
+
+    if sort_attribute && sort_order
+      @recipes = @recipes.order(sort_attribute => sort_order)
+    elsif sort_attribute
+      @recipes = @recipes.order(sort_attribute)
+    end
+
     render 'index.json.jbuilder'
   end
 
   def create
     @recipe = Recipe.new(
-                          title: params[:title],
-                          chef: params[:chef],
-                          ingredients: params[:ingredients],
-                          directions: params[:directions],
-                          image_url: params[:image_url],
-                          prep_time: params[:prep_time]
-                          )
+                        title: params[:title],
+                        chef: params[:chef],
+                        ingredients: params[:ingredients],
+                        directions: params[:directions],
+                        image_url: params[:image_url],
+                        prep_time: params[:prep_time]
+                        )
     @recipe.save
     render 'show.json.jbuilder'
   end
