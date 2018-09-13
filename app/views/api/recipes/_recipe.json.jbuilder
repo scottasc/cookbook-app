@@ -13,3 +13,5 @@ json.formatted do
   json.ingredients recipe.ingredients_list
   json.directions recipe.directions_list
 end
+
+json.current_user current_user

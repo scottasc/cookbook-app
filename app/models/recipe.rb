@@ -1,5 +1,7 @@
 class Recipe < ApplicationRecord
 
+  belongs_to :user
+
   #we don't need an initialize method, it's inheriting that from ApplicationRecord
 
   def ingredients_list
@@ -25,4 +27,9 @@ class Recipe < ApplicationRecord
 
    time_message
   end
+
+  def chef
+    user.name
+  end
+
 end
